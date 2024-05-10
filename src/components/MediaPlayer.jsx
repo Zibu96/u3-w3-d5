@@ -4,10 +4,21 @@ import prev from "../assets/playerbuttons/prev.png";
 import play from "../assets/playerbuttons/play.png";
 import next from "../assets/playerbuttons/next.png";
 import repeat from "../assets/playerbuttons/repeat.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  addToFavouriteAction,
+  removeFromFavouriteAction,
+} from "../redux/actions";
 
 const MediaPlayer = () => {
   const song = useSelector((state) => state.selectedSong.content);
+  const favourites = useSelector((state) => state.favourite.content);
+
+  const dispatch = useDispatch();
+  console.log(song);
+  let isFav = favourites.includes(song);
+
   return (
     <Container fluid className="fixed-bottom bg-container pt-1">
       <Row className="h-100">
@@ -49,6 +60,22 @@ const MediaPlayer = () => {
                   <a href="#">
                     <img src={repeat} alt="repeat" />
                   </a>
+
+                  {isFav ? (
+                    <i
+                      className="bi bi-heart-fill text-white"
+                      onClick={() => {
+                        dispatch(removeFromFavouriteAction(song));
+                      }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-heart text-white"
+                      onClick={() => {
+                        dispatch(addToFavouriteAction(song));
+                      }}
+                    ></i>
+                  )}
                 </div>
               </div>
               <div className="progress mt-3">
